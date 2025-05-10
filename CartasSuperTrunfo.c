@@ -1,6 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 
+// Função para comparar métricas
+void compararMetricas(float valor1, float valor2, const char* nomeMetrica, int menorVence) {
+    printf("%s: ", nomeMetrica);
+    if (valor1 == valor2) {
+        printf("Empate!\n");
+    } else if ((valor1 > valor2 && !menorVence) || (valor1 < valor2 && menorVence)) {
+        printf("Carta 1 venceu!\n");
+    } else {
+        printf("Carta 2 venceu!\n");
+    }
+}
+
 int main() {
     // Declaração de variáveis para Carta 1
     char estado1;
@@ -116,26 +128,13 @@ int main() {
     // Comparações entre as Cartas
     printf("\n--- Comparação entre as Cartas ---\n");
 
-    // População: Carta com maior população vence
-    printf("População: Carta 1 venceu (%d)\n", populacao1 > populacao2);
-    
-    // Área: Carta com maior área vence
-    printf("Área: Carta 1 venceu (%d)\n", area1 > area2);
-
-    // PIB: Carta com maior PIB vence
-    printf("PIB: Carta 1 venceu (%d)\n", pib1 > pib2);
-
-    // Pontos turísticos: Carta com mais pontos turísticos vence
-    printf("Pontos Turísticos: Carta 1 venceu (%d)\n", pontos1 > pontos2);
-
-    // Densidade populacional: Carta com menor densidade vence
-    printf("Densidade populacional: Carta 1 venceu (%d)\n", densidade1 < densidade2);
-
-    // PIB per capita: Carta com maior PIB per capita vence
-    printf("PIB per capita: Carta 1 venceu (%d)\n", pibpercapita1 > pibpercapita2);
-
-    // Super Poder: Carta com maior super poder vence
-    printf("Super Poder: Carta 1 venceu (%d)\n", superPoder1 > superPoder2);
+    compararMetricas((float)populacao1, (float)populacao2, "População", 0);
+    compararMetricas(area1, area2, "Área", 0);
+    compararMetricas(pib1, pib2, "PIB", 0);
+    compararMetricas((float)pontos1, (float)pontos2, "Pontos Turísticos", 0);
+    compararMetricas(densidade1, densidade2, "Densidade Populacional", 1);
+    compararMetricas(pibpercapita1, pibpercapita2, "PIB per capita", 0);
+    compararMetricas(superPoder1, superPoder2, "Super Poder", 0);
 
     return 0;
 }
