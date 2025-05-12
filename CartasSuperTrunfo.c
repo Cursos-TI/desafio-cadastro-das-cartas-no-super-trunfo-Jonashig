@@ -1,109 +1,156 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-// Função de comparação com if-else aninhado
-void comparar(float valor1, float valor2, int menorVence, const char* nomeAtributo) {
-    printf("\nComparando %s:\n", nomeAtributo);
-    printf("Carta 1: %.2f\n", valor1);
-    printf("Carta 2: %.2f\n", valor2);
-
-    if (valor1 == valor2) {
-        printf("Empate!\n");
-    } else {
-        if (menorVence) {
-            if (valor1 < valor2) {
-                printf("Carta 1 venceu (menor %s).\n", nomeAtributo);
-            } else {
-                printf("Carta 2 venceu (menor %s).\n", nomeAtributo);
-            }
-        } else {
-            if (valor1 > valor2) {
-                printf("Carta 1 venceu (maior %s).\n", nomeAtributo);
-            } else {
-                printf("Carta 2 venceu (maior %s).\n", nomeAtributo);
-            }
+// Função para exibir menu de atributos
+void exibirMenu(int opcaoEscolhida) {
+    for (int i = 1; i <= 5; i++) {
+        if (i == opcaoEscolhida) continue;
+        switch (i) {
+            case 1: printf("1 - População\n"); break;
+            case 2: printf("2 - Área\n"); break;
+            case 3: printf("3 - PIB\n"); break;
+            case 4: printf("4 - Pontos Turísticos\n"); break;
+            case 5: printf("5 - Densidade Demográfica\n"); break;
         }
     }
 }
 
-int main() {
-    char nome1[50], nome2[50];
-    unsigned long int populacao1, populacao2;
-    float area1, area2, pib1, pib2;
-    int pontos1, pontos2;
-    float densidade1, densidade2;
-
-    // Entrada de dados
-    printf("Carta 1:\n");
-    printf("Nome do país: ");
-    fgets(nome1, sizeof(nome1), stdin);
-    nome1[strcspn(nome1, "\n")] = '\0';
-    printf("População: ");
-    scanf("%lu", &populacao1);
-    printf("Área (km²): ");
-    scanf("%f", &area1);
-    printf("PIB (em bilhões): ");
-    scanf("%f", &pib1);
-    printf("Número de pontos turísticos: ");
-    scanf("%d", &pontos1);
-    getchar(); // Limpa buffer
-
-    printf("\nCarta 2:\n");
-    printf("Nome do país: ");
-    fgets(nome2, sizeof(nome2), stdin);
-    nome2[strcspn(nome2, "\n")] = '\0';
-    printf("População: ");
-    scanf("%lu", &populacao2);
-    printf("Área (km²): ");
-    scanf("%f", &area2);
-    printf("PIB (em bilhões): ");
-    scanf("%f", &pib2);
-    printf("Número de pontos turísticos: ");
-    scanf("%d", &pontos2);
-
-    // Cálculo de densidade
-    densidade1 = populacao1 / area1;
-    densidade2 = populacao2 / area2;
-
-    // Exibição dos dados
-    printf("\n--- Dados das Cartas ---\n");
-    printf("\nCarta 1:\nNome: %s\nPopulação: %lu\nÁrea: %.2f\nPIB: %.2f\nPontos Turísticos: %d\nDensidade: %.2f\n", 
-        nome1, populacao1, area1, pib1, pontos1, densidade1);
-    printf("\nCarta 2:\nNome: %s\nPopulação: %lu\nÁrea: %.2f\nPIB: %.2f\nPontos Turísticos: %d\nDensidade: %.2f\n", 
-        nome2, populacao2, area2, pib2, pontos2, densidade2);
-
-    // Menu interativo
-    int escolha;
-    printf("\n--- Menu de Comparação ---\n");
-    printf("Escolha o atributo para comparar:\n");
-    printf("1. População\n");
-    printf("2. Área\n");
-    printf("3. PIB\n");
-    printf("4. Pontos Turísticos\n");
-    printf("5. Densidade Demográfica\n");
-    printf("Digite sua opção (1-5): ");
-    scanf("%d", &escolha);
-
-    // Switch com lógica if-else aninhada
-    switch (escolha) {
-        case 1:
-            comparar((float)populacao1, (float)populacao2, 0, "população");
-            break;
-        case 2:
-            comparar(area1, area2, 0, "área");
-            break;
-        case 3:
-            comparar(pib1, pib2, 0, "PIB");
-            break;
-        case 4:
-            comparar((float)pontos1, (float)pontos2, 0, "pontos turísticos");
-            break;
-        case 5:
-            comparar(densidade1, densidade2, 1, "densidade demográfica");
-            break;
-        default:
-            printf("Opção inválida!\n");
+// Função para obter o valor do atributo selecionado
+float obterValor(int opcao, unsigned long int populacao, float area, float pib, int pontos, float densidade, char *nomeAttr) {
+    switch (opcao) {
+        case 1: strcpy(nomeAttr, "População"); return populacao;
+        case 2: strcpy(nomeAttr, "Área"); return area;
+        case 3: strcpy(nomeAttr, "PIB"); return pib;
+        case 4: strcpy(nomeAttr, "Pontos Turísticos"); return pontos;
+        case 5: strcpy(nomeAttr, "Densidade Demográfica"); return densidade;
+        default: printf("Opção inválida. Encerrando.\n"); exit(1);
     }
+}
+
+int main() {
+    char resposta[4];
+
+    // MENU INTERATIVO
+    while (1) {
+        printf("===== MENU DO JOGO =====\n");
+        printf("Digite 'sim' ou 'não' para as opções abaixo:\n");
+
+        printf("1 - Iniciar o jogo: ");
+        scanf("%s", resposta);
+        if (strcmp(resposta, "sim") == 0) break;
+
+        printf("2 - Regras: ");
+        scanf("%s", resposta);
+        if (strcmp(resposta, "sim") == 0) {
+            printf("\n===== REGRAS DO JOGO =====\n");
+            printf("O jogo consiste em comparar dois atributos entre duas cartas de cidades brasileiras.\n");
+            printf("Você irá cadastrar duas cartas com dados como população, área, PIB e pontos turísticos.\n\n");
+            printf("Você escolherá dois atributos diferentes para comparar.\n");
+            printf("- Para População, Área, PIB e Pontos Turísticos: vence a carta com o MAIOR valor.\n");
+            printf("- Para Densidade Demográfica: vence a carta com o MENOR valor.\n");
+            printf("Depois de comparar os dois atributos, o jogo soma os valores dos dois atributos para cada carta.\n");
+            printf("A carta com a MAIOR soma vence a rodada.\n");
+            printf("Se as somas forem iguais, o resultado será EMPATE.\n\n");
+
+            printf("Deseja voltar ao menu anterior? Digite 'sim' ou 'não': ");
+            scanf("%s", resposta);
+            if (strcmp(resposta, "sim") == 0) continue;
+            else {
+                while (1) {
+                    printf("Deseja voltar ao menu agora? Digite 'sim' ou 'não': ");
+                    scanf("%s", resposta);
+                    if (strcmp(resposta, "sim") == 0) break;
+                }
+            }
+        }
+
+        printf("3 - Sair do jogo: ");
+        scanf("%s", resposta);
+        if (strcmp(resposta, "sim") == 0) {
+            printf("Encerrando o jogo. Até logo!\n");
+            exit(0);
+        }
+    }
+
+    // Declaração de variáveis para Carta 1
+    char estado1, nome1[50], codigo1[5];
+    int codigoNum1, pontos1;
+    unsigned long int populacao1;
+    float area1, pib1, densidade1, pibpercapita1;
+
+    // Declaração de variáveis para Carta 2
+    char estado2, nome2[50], codigo2[5];
+    int codigoNum2, pontos2;
+    unsigned long int populacao2;
+    float area2, pib2, densidade2, pibpercapita2;
+
+    // Entrada Carta 1
+    printf("Carta 1:\n");
+    printf("Insira uma letra de 'A' a 'H': "); scanf(" %c", &estado1);
+    printf("Insira um número de 1 a 4: "); scanf("%d", &codigoNum1); getchar();
+    printf("Insira o nome da cidade: "); fgets(nome1, sizeof(nome1), stdin); nome1[strcspn(nome1, "\n")] = '\0';
+    printf("Insira o número de habitantes: "); scanf("%lu", &populacao1);
+    printf("Insira a área (em km²): "); scanf("%f", &area1);
+    printf("Insira o valor do PIB (em bilhões de reais): "); scanf("%f", &pib1);
+    printf("Insira a quantidade de pontos turísticos: "); scanf("%d", &pontos1);
+    sprintf(codigo1, "%c%02d", estado1, codigoNum1);
+
+    // Entrada Carta 2
+    printf("\nCarta 2:\n");
+    printf("Insira uma letra de 'A' a 'H': "); scanf(" %c", &estado2);
+    printf("Insira um número de 1 a 4: "); scanf("%d", &codigoNum2); getchar();
+    printf("Insira o nome da cidade: "); fgets(nome2, sizeof(nome2), stdin); nome2[strcspn(nome2, "\n")] = '\0';
+    printf("Insira o número de habitantes: "); scanf("%lu", &populacao2);
+    printf("Insira a área (em km²): "); scanf("%f", &area2);
+    printf("Insira o valor do PIB (em bilhões de reais): "); scanf("%f", &pib2);
+    printf("Insira a quantidade de pontos turísticos: "); scanf("%d", &pontos2);
+    sprintf(codigo2, "%c%02d", estado2, codigoNum2);
+
+    // Cálculos
+    densidade1 = (float)populacao1 / area1;
+    densidade2 = (float)populacao2 / area2;
+    pibpercapita1 = (pib1 * 1e9) / populacao1;
+    pibpercapita2 = (pib2 * 1e9) / populacao2;
+
+    // Menu interativo para escolha de dois atributos
+    int opcao1, opcao2;
+    float valor1_c1, valor1_c2, valor2_c1, valor2_c2;
+    char nomeAttr1[30], nomeAttr2[30];
+
+    printf("\nEscolha o primeiro atributo para comparação:\n");
+    printf("1 - População\n2 - Área\n3 - PIB\n4 - Pontos Turísticos\n5 - Densidade Demográfica\n");
+    scanf("%d", &opcao1);
+    valor1_c1 = obterValor(opcao1, populacao1, area1, pib1, pontos1, densidade1, nomeAttr1);
+    valor1_c2 = obterValor(opcao1, populacao2, area2, pib2, pontos2, densidade2, nomeAttr1);
+
+    printf("\nEscolha o segundo atributo para comparação:\n");
+    exibirMenu(opcao1);
+    scanf("%d", &opcao2);
+
+    if (opcao2 == opcao1 || opcao2 < 1 || opcao2 > 5) {
+        printf("Opção inválida. Encerrando.\n");
+        return 1;
+    }
+
+    valor2_c1 = obterValor(opcao2, populacao1, area1, pib1, pontos1, densidade1, nomeAttr2);
+    valor2_c2 = obterValor(opcao2, populacao2, area2, pib2, pontos2, densidade2, nomeAttr2);
+
+    int v1 = (opcao1 == 5) ? (valor1_c1 < valor1_c2) : (valor1_c1 > valor1_c2);
+    int v2 = (opcao2 == 5) ? (valor2_c1 < valor2_c2) : (valor2_c1 > valor2_c2);
+
+    float soma1 = valor1_c1 + valor2_c1;
+    float soma2 = valor1_c2 + valor2_c2;
+
+    printf("\n--- Resultado da Comparação ---\n");
+    printf("%s vs %s\n", nome1, nome2);
+    printf("%s: %.2f vs %.2f\n", nomeAttr1, valor1_c1, valor1_c2);
+    printf("%s: %.2f vs %.2f\n", nomeAttr2, valor2_c1, valor2_c2);
+    printf("Soma dos atributos: %.2f (Carta 1) vs %.2f (Carta 2)\n", soma1, soma2);
+
+    if (soma1 > soma2) printf("Resultado: Carta 1 venceu!\n");
+    else if (soma2 > soma1) printf("Resultado: Carta 2 venceu!\n");
+    else printf("Resultado: Empate!\n");
 
     return 0;
 }
