@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-// Função para exibir menu de atributos
 void exibirMenu(int opcaoEscolhida) {
     for (int i = 1; i <= 5; i++) {
         if (i == opcaoEscolhida) continue;
@@ -16,7 +15,6 @@ void exibirMenu(int opcaoEscolhida) {
     }
 }
 
-// Função para obter o valor do atributo selecionado
 float obterValor(int opcao, unsigned long int populacao, float area, float pib, int pontos, float densidade, char *nomeAttr) {
     switch (opcao) {
         case 1: strcpy(nomeAttr, "População"); return populacao;
@@ -29,57 +27,13 @@ float obterValor(int opcao, unsigned long int populacao, float area, float pib, 
 }
 
 int main() {
-    char resposta[4];
-
-    // MENU INTERATIVO
-    while (1) {
-        printf("===== MENU DO JOGO =====\n");
-        printf("Digite 'sim' ou 'não' para as opções abaixo:\n");
-
-        printf("1 - Iniciar o jogo: ");
-        scanf("%s", resposta);
-        if (strcmp(resposta, "sim") == 0) break;
-
-        printf("2 - Regras: ");
-        scanf("%s", resposta);
-        if (strcmp(resposta, "sim") == 0) {
-            printf("\n===== REGRAS DO JOGO =====\n");
-            printf("O jogo consiste em comparar dois atributos entre duas cartas de cidades brasileiras.\n");
-            printf("Você irá cadastrar duas cartas com dados como população, área, PIB e pontos turísticos.\n\n");
-            printf("Você escolherá dois atributos diferentes para comparar.\n");
-            printf("- Para População, Área, PIB e Pontos Turísticos: vence a carta com o MAIOR valor.\n");
-            printf("- Para Densidade Demográfica: vence a carta com o MENOR valor.\n");
-            printf("Depois de comparar os dois atributos, o jogo soma os valores dos dois atributos para cada carta.\n");
-            printf("A carta com a MAIOR soma vence a rodada.\n");
-            printf("Se as somas forem iguais, o resultado será EMPATE.\n\n");
-
-            printf("Deseja voltar ao menu anterior? Digite 'sim' ou 'não': ");
-            scanf("%s", resposta);
-            if (strcmp(resposta, "sim") == 0) continue;
-            else {
-                while (1) {
-                    printf("Deseja voltar ao menu agora? Digite 'sim' ou 'não': ");
-                    scanf("%s", resposta);
-                    if (strcmp(resposta, "sim") == 0) break;
-                }
-            }
-        }
-
-        printf("3 - Sair do jogo: ");
-        scanf("%s", resposta);
-        if (strcmp(resposta, "sim") == 0) {
-            printf("Encerrando o jogo. Até logo!\n");
-            exit(0);
-        }
-    }
-
-    // Declaração de variáveis para Carta 1
+    // Carta 1
     char estado1, nome1[50], codigo1[5];
     int codigoNum1, pontos1;
     unsigned long int populacao1;
     float area1, pib1, densidade1, pibpercapita1;
 
-    // Declaração de variáveis para Carta 2
+    // Carta 2
     char estado2, nome2[50], codigo2[5];
     int codigoNum2, pontos2;
     unsigned long int populacao2;
@@ -113,7 +67,7 @@ int main() {
     pibpercapita1 = (pib1 * 1e9) / populacao1;
     pibpercapita2 = (pib2 * 1e9) / populacao2;
 
-    // Menu interativo para escolha de dois atributos
+    // Escolha de atributos
     int opcao1, opcao2;
     float valor1_c1, valor1_c2, valor2_c1, valor2_c2;
     char nomeAttr1[30], nomeAttr2[30];
@@ -136,9 +90,7 @@ int main() {
     valor2_c1 = obterValor(opcao2, populacao1, area1, pib1, pontos1, densidade1, nomeAttr2);
     valor2_c2 = obterValor(opcao2, populacao2, area2, pib2, pontos2, densidade2, nomeAttr2);
 
-    int v1 = (opcao1 == 5) ? (valor1_c1 < valor1_c2) : (valor1_c1 > valor1_c2);
-    int v2 = (opcao2 == 5) ? (valor2_c1 < valor2_c2) : (valor2_c1 > valor2_c2);
-
+    // Comparação e resultado
     float soma1 = valor1_c1 + valor2_c1;
     float soma2 = valor1_c2 + valor2_c2;
 
